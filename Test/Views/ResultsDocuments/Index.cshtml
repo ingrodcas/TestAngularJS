@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/Resultados.js"></script>
+<h1 class="h3 mb-2 text-gray-800">Resultados</h1>
+<div class="card shadow mb-4" ng-app="TestApp">
+    <div ng-controller="ResultadosCntrl">
+        <div class="card-body">
+            <div class="card-header">
+                <h5 class="m-0 font-weight-bold">Resultados</h5>
+            </div>
+            <hr />
+            <div class="table-responsive">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group pull-left" style="display: inline-flex; float: left;">
+                            <label class="col-form-label pr-2">Motrar</label>
+                            <select id="ddlPageSize" class="form-control" ng-model="pageSize" ng-change="changePageSize()">
+                                <option value="5" ng-value="5">5</option>
+                                <option value="10" ng-value="10">10</option>
+                                <option value="25" ng-value="25">25</option>
+                                <option value="50" ng-value="50">50</option>
+                            </select>
+                            <label class="col-form-label pl-2">Registros</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group pull-right" style="display: inline-flex; float: right;">
+                            <label class="col-form-label">Buscar</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model="searchText" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered"
+                               id="dataTableResult"
+                               width="100%"
+                               cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th ng-click="sorBy('Id')">
+                                        Id
+                                        <i ng-show="sortColumn=='Id'"
+                                           ng-class="{'fa fa-sort-amount-asc': !reverse,
+                                                      'fa fa-sort-amount-desc':reverse }"></i>
+                                    </th>
+                                    <th ng-click="sorBy('Procedure')">
+                                        Procedimiento
+                                        <i ng-show="sortColumn=='Procedure'"
+                                           ng-class="{'fa fa-sort-amount-asc': !reverse,
+                                                      'fa fa-sort-amount-desc':reverse }"></i>
+                                    </th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="result in results | filter :searchText | orderBy: sortColumn: reverse">
+                                    <td>
+                                        {{result.Id}}
+                                    </td>
+                                    <td>
+                                        {{result.Procedure}}
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-primary">
+                                            <i class="fa fa-download"></i>
+                                            Descargar
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-if="!results || (results | filter:searchText).length==0">
+                                    <td colspan="7" style="text-align:center">
+                                        No hay datos para mostrar...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="pull-right">
+                            <pre>Actualmente estás en la página {{pageIndex}}</pre>
+                            <button type="button"
+                                    ng-click="paging(pageIndex-1)"
+                                    class="btn btn-primary">
+                                <i class="fa fa-arrow-circle-left"></i>
+                                Anterior
+                            </button>
+                            <button type="button"
+                                    ng-click="paging(pageIndex+1)"
+                                    class="btn btn-primary">
+                                Siguiente
+                                <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+

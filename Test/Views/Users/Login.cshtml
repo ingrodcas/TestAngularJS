@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/Login.js"></script>
+<div class="row" ng-app="TestApp">
+    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+    <div class="col-lg-6" ng-controller="LoginCntrl">
+        <div class="p-5">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de nuevo!</h1>
+            </div>
+            <div class="user">
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control form-control-user"
+                           id="userName"
+                           aria-describedby="emailHelp"
+                           placeholder="Introducir su nombre de usuario..."
+                           ng-model="UserName">
+                </div>
+                <div class="form-group">
+                    <input type="password"
+                           class="form-control form-control-user"
+                           id="passWord"
+                           placeholder="Contraseña"
+                           ng-model="Password">
+                </div>
+                <input type="submit"
+                       value="Entrar"
+                       class="btn btn-primary btn-user btn-block"
+                       ng-click="LogIn()" />
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+

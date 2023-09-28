@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PersonType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Person" Relationship="TestModel.FK_Person_PersonType" FromRole="PersonType" ToRole="Person" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PersonId" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsTemporal" Type="Boolean" />
+    <Property Name="IsBlock" Type="Boolean" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
+    <Property Name="ModificationDate" Type="DateTime" Precision="3" />
+    <Property Name="RegistrationUser" Type="Guid" />
+    <Property Name="ModificationUser" Type="Guid" />
+    <NavigationProperty Name="Person" Relationship="TestModel.FK_Users_Person" FromRole="Users" ToRole="Person" />
+  </EntityType>
+  <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PersonType" EntityType="Self.PersonType" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="Person" EntityType="TestModel.Person" />
+    <EntitySet Name="ResultsDocuments" EntityType="TestModel.ResultsDocuments" />
+    <AssociationSet Name="FK_Person_PersonType" Association="TestModel.FK_Person_PersonType">
+      <End Role="PersonType" EntitySet="PersonType" />
+      <End Role="Person" EntitySet="Person" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ResultsDocuments_Person" Association="TestModel.FK_ResultsDocuments_Person">
+      <End Role="Person" EntitySet="Person" />
+      <End Role="ResultsDocuments" EntitySet="ResultsDocuments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Person" Association="TestModel.FK_Users_Person">
+      <End Role="Person" EntitySet="Person" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PersonTypeId" Type="Int32" />
+    <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Age" Type="Int32" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
+    <Property Name="ModificationDate" Type="DateTime" Precision="3" />
+    <Property Name="RegistrationUser" Type="Guid" />
+    <Property Name="ModificationUser" Type="Guid" />
+    <NavigationProperty Name="PersonType" Relationship="TestModel.FK_Person_PersonType" FromRole="Person" ToRole="PersonType" />
+    <NavigationProperty Name="ResultsDocuments" Relationship="TestModel.FK_ResultsDocuments_Person" FromRole="Person" ToRole="ResultsDocuments" />
+    <NavigationProperty Name="Users" Relationship="TestModel.FK_Users_Person" FromRole="Person" ToRole="Users" />
+    <Property Name="Identificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ResultsDocuments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PersonId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Documents" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
+    <Property Name="ModificationDate" Type="DateTime" Precision="3" />
+    <Property Name="RegistrationUser" Type="Guid" />
+    <Property Name="ModificationUser" Type="Guid" />
+    <NavigationProperty Name="Person" Relationship="TestModel.FK_ResultsDocuments_Person" FromRole="ResultsDocuments" ToRole="Person" />
+    <Property Name="Procedure" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_Person_PersonType">
+    <End Type="TestModel.PersonType" Role="PersonType" Multiplicity="0..1" />
+    <End Type="TestModel.Person" Role="Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PersonType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Person">
+        <PropertyRef Name="PersonTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ResultsDocuments_Person">
+    <End Type="TestModel.Person" Role="Person" Multiplicity="0..1" />
+    <End Type="TestModel.ResultsDocuments" Role="ResultsDocuments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ResultsDocuments">
+        <PropertyRef Name="PersonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Person">
+    <End Type="TestModel.Person" Role="Person" Multiplicity="0..1" />
+    <End Type="TestModel.Users" Role="Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="PersonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

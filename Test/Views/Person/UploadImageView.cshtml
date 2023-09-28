@@ -1,0 +1,30 @@
+﻿@model List<Test.Models.Images>
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="title">Almacenamiento de imagenes</h2>
+        <div>
+            @using (Html.BeginForm("Image", "Person", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+<input type="file" name="files" class="form-control file-caption" required>
+                <br />
+                                <input type="submit" name=”Submit” id="Submit" value="Almacenar" class="btn btn-info">            }
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+<table class="table-bordered table">
+    <tr>
+        <td>Nombre</td>
+        <td>Imagen</td>
+        <td>Eliminar imagen</td>
+    </tr>
+    @foreach (var img in Model)
+    {
+<tr>
+    <td>@img.Nombre</td>
+    <td><img src="@img.UrlImagen" style="width:100px;height:150px" /></td>
+    <td>@Html.ActionLink("Eliminar", "Image", "Person", new { nombre = img.Nombre }, null)</td>
+</tr>}
+</table>}
+

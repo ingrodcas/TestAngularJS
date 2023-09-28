@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PersonTypeId" Type="int" />
+    <Property Name="Identificacion" Type="varchar" MaxLength="50" />
+    <Property Name="FirstName" Type="varchar" MaxLength="100" />
+    <Property Name="LastName" Type="varchar" MaxLength="100" />
+    <Property Name="Age" Type="int" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="150" />
+    <Property Name="Active" Type="bit" />
+    <Property Name="RegistrationDate" Type="datetime" />
+    <Property Name="ModificationDate" Type="datetime" />
+    <Property Name="RegistrationUser" Type="uniqueidentifier" />
+    <Property Name="ModificationUser" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="PersonType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <EntityType Name="ResultsDocuments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PersonId" Type="int" />
+    <Property Name="Procedure" Type="varchar" MaxLength="500" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="Documents" Type="varbinary(max)" />
+    <Property Name="Active" Type="bit" />
+    <Property Name="RegistrationDate" Type="datetime" />
+    <Property Name="ModificationDate" Type="datetime" />
+    <Property Name="RegistrationUser" Type="uniqueidentifier" />
+    <Property Name="ModificationUser" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PersonId" Type="int" />
+    <Property Name="UserName" Type="varchar" MaxLength="100" />
+    <Property Name="Password" Type="varchar" MaxLength="100" />
+    <Property Name="IsTemporal" Type="bit" />
+    <Property Name="IsBlock" Type="bit" />
+    <Property Name="Active" Type="bit" />
+    <Property Name="RegistrationDate" Type="datetime" />
+    <Property Name="ModificationDate" Type="datetime" />
+    <Property Name="RegistrationUser" Type="uniqueidentifier" />
+    <Property Name="ModificationUser" Type="uniqueidentifier" />
+  </EntityType>
+  <Association Name="FK_Person_PersonType">
+    <End Role="PersonType" Type="Self.PersonType" Multiplicity="0..1" />
+    <End Role="Person" Type="Self.Person" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PersonType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Person">
+        <PropertyRef Name="PersonTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ResultsDocuments_Person">
+    <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+    <End Role="ResultsDocuments" Type="Self.ResultsDocuments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ResultsDocuments">
+        <PropertyRef Name="PersonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Person">
+    <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="PersonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestModelStoreContainer">
+    <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PersonType" EntityType="Self.PersonType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ResultsDocuments" EntityType="Self.ResultsDocuments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Person_PersonType" Association="Self.FK_Person_PersonType">
+      <End Role="PersonType" EntitySet="PersonType" />
+      <End Role="Person" EntitySet="Person" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ResultsDocuments_Person" Association="Self.FK_ResultsDocuments_Person">
+      <End Role="Person" EntitySet="Person" />
+      <End Role="ResultsDocuments" EntitySet="ResultsDocuments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Person" Association="Self.FK_Users_Person">
+      <End Role="Person" EntitySet="Person" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
